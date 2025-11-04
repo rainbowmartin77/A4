@@ -1,22 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <omp.h>
 
 #define SIZE 100000000
 
-long long sumArray(int arr[], int size) 
-{
-    long long total = 0;
-    int n = SIZE;
-
-    for(int x = 0; x < n; x++) {
-        total += arr[x];
-    }
-
-    return total;
-}
-
 int main() 
 {
+    //omp_set_num_threads (9);
     
     int* arr = (int*)malloc(SIZE * sizeof(int));
         if (arr == NULL) {
@@ -28,8 +18,14 @@ int main()
         arr[i] = i + 1; 
     }
 
-    long long totalSum = sumArray(arr, SIZE);
-    printf("Total Sum: %lld\n", totalSum);
+    long long total = 0;
+    int n = SIZE;
+
+    for(int x = 0; x < n; x++) {
+        total += arr[x];
+    }
+
+    printf("Total Sum: %lld\n", total);
 
     return 0;
 }
