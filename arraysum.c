@@ -6,8 +6,10 @@
 
 int main() 
 {
-    //omp_set_num_threads (9);
+    // Set number of threads
+    omp_set_num_threads (9);
     
+    // Initialize array
     int* arr = (int*)malloc(SIZE * sizeof(int));
         if (arr == NULL) {
             printf("Memory allocation failed!\n");
@@ -18,10 +20,15 @@ int main()
         arr[i] = i + 1; 
     }
 
+    // Shared variables
     long long total = 0;
     int n = SIZE;
+    long long thisTotal = 0;
 
-    for(int x = 0; x < n; x++) {
+    // Parallel portion
+    #pragma omp parallel for reduction (+:total) 
+    for(int x = 0; x < n; x++)
+    {
         total += arr[x];
     }
 
