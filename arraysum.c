@@ -22,6 +22,7 @@ int main()
         arr[i] = i + 1; 
     }
 
+    // Parallel portion of addition
     #pragma omp parallel
     {
         int id = omp_get_thread_num();
@@ -35,6 +36,7 @@ int main()
             thisTotal += arr[i];
         }
 
+        // Critical portion, not all threads should access at the same time
         #pragma omp critical
         {
             total += thisTotal;
