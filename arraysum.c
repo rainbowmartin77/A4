@@ -1,17 +1,23 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <omp.h>
 
 #define SIZE 100000000
-#define NUM_THREADS 9
+
+long long sumArray(int arr[], int size) 
+{
+    long long total = 0;
+    int n = SIZE;
+
+    for(int x = 0; x < n; x++) {
+        total += arr[x];
+    }
+
+    return total;
+}
 
 int main() 
 {
-    long long total = 0;
-
-    omp_set_num_threads (NUM_THREADS);
     
-    // Initialize array
     int* arr = (int*)malloc(SIZE * sizeof(int));
         if (arr == NULL) {
             printf("Memory allocation failed!\n");
@@ -22,28 +28,8 @@ int main()
         arr[i] = i + 1; 
     }
 
-    // Parallel portion of addition
-    #pragma omp parallel
-    {
-        int id = omp_get_thread_num();
-        long long thisTotal = 0;
-
-        long long divide = (SIZE + NUM_THREADS - 1) / NUM_THREADS;
-        long long start = id * divide;
-        long long end = (start + divide > SIZE) ? SIZE : start + divide;
-
-        for (long long i = start; i < end; i++) {
-            thisTotal += arr[i];
-        }
-
-        // Critical portion, not all threads should access at the same time
-        #pragma omp critical
-        {
-            total += thisTotal;
-        }
-    }
-
-    printf("Total Sum: %lld\n", total);
+    long long totalSum = sumArray(arr, SIZE);
+    printf("Total Sum: %lld\n", totalSum);
 
     return 0;
 }
