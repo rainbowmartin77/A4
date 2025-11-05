@@ -1,26 +1,40 @@
 #include "nqueens.h"
+#include <omp.h>
 
 int main() 
 {
+    omp_set_num_threads(9);
     int n = 15;
+    int solutions = 0;
 
     // Allocate memory for board
-    int* board = (int*)malloc(n * sizeof(int));
-    if (board == NULL) {
-        fprintf(stderr, "Memory allocation failed\n");
-        return 1;
-    }
+    // Parallelize board? Use dynamic scheduling for load balancing
+    // Each thread needs its own board so they don't overwrite each other
+    #pragma omp parallel for schedule(dynamic) reduction(+:solutions)
+    for (int row = 0; row < n; row++)
+    {
+        // Allocate memory for the boards
+        int* board = (int*)malloc(n * sizeof(int));
+        if (board == NULL) {
+            fprintf(stderr, "Memory allocation failed\n");
+            continue;
+        }
 
-    // Initialize board
-    for (int i = 0; i < n; i++) {
-        board[i] = -1;
-    }
+        // Initialize board
+        for (int i = 0; i < n; i++) {
+            board[i] = -1;
+        }
 
-    int solutions = 0;
-    solutions = solveNQueensUtil(board, 0, n);
+        // Set the start of the board for each thread
+        board[0] = row;
+    
+        // Accumulate solutions
+        solutions += solveNQueensUtil(board, 1, n);
+
+        free(board);
+    }
 
     printf("There are %d solutions.\n", solutions);
 
-    free(board);
     return 0;
 }
