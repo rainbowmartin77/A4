@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h> // For malloc() and free()
+#include <omp.h>
 
 #define N 1000 // Adjust this to test larger matrix sizes
 
@@ -15,7 +16,12 @@ void displayMatrix(int** matrix, int n)
 
 void matrixMultiply(int** A, int** B, int** C, int n) 
 {
+    // Set number of threads
+    omp_set_num_threads(9);
+
+
     //Loop through rows of C and A
+    #pragma omp parallel for
     for (int i = 0; i < n; i++){
         //Loop through columns of C and B
         for (int j = 0; j < n; j++){

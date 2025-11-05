@@ -31,6 +31,7 @@ int main()
 
     printf("Matrices initialized successfully.\n");
 
+    // Parallel portion
     matrixMultiply(A, B, C, N);
 
     printf("Matrix multiplication complete!\n");
