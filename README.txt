@@ -1,0 +1,1 @@
+Coding task 1 needed to be done with N = 100,000,000 for memory issues

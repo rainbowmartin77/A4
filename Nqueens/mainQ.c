@@ -3,7 +3,7 @@
 
 int main() 
 {
-    omp_set_num_threads(9);
+    omp_set_num_threads(7);
     int n = 15;
     int solutions = 0;
 
