@@ -13,18 +13,14 @@ bool isSafe(int board[], int row, int col, int n)
     return true;
 }
 
-void solveNQueensUtil(int board[], int col, int n) 
+int solveNQueensUtil(int board[], int col, int n) 
 {
+    int solutions = 0;
+
     // Base case
     // All column have been gone through
     if (col == n) {
-        // print the solution
-        printf("The board is solved:\n");
-        for( int i = 0; i < n; i++) {
-            printf("%d", board[i]);
-        }
-        printf("\n");
-        return;
+        return 1;
     }
 
     // Recursive case
@@ -34,9 +30,9 @@ void solveNQueensUtil(int board[], int col, int n)
         // and recursively call this function for the next column
         if (isSafe(board, row, col, n)) {
             board[col] = row;
-            solveNQueensUtil(board, col+1, n);
+            solutions += solveNQueensUtil(board, col+1, n);
         }
     }
     
-    return;
+    return solutions;
 }
