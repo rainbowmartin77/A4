@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <omp.h>
 
 #define N 1000000000 // intervals
 
@@ -8,6 +9,8 @@ double f(double x) {
 
 double trapezoidalRule() 
 {
+    omp_set_num_threads (9);
+    
     // Upper limit and lower limit
     double start = 0.0;
     double end = 1.0;
@@ -20,7 +23,9 @@ double trapezoidalRule()
     // First point contributes half
     total += f(start) / 2;
 
+    // Parallel section
     // Loop through the middle trapezoids
+    #pragma omp parallel for reduction (+:total)
     for (int i = 1; i < N; i++) {
         // Calculate trapezoid area
         double trap = start + i * trapWidth;
