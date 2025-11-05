@@ -7,7 +7,7 @@
 int main() 
 {
     // Set number of threads
-    omp_set_num_threads (9);
+    omp_set_num_threads (7);
     
     // Initialize array
     int* arr = (int*)malloc(SIZE * sizeof(int));
